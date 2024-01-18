@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import jwtInterceptor from "../utils/jwtInterceptor";
 
 const AuthContext = React.createContext();
 
@@ -13,7 +14,7 @@ function AuthProvider(props) {
   });
 
   const navigate = useNavigate();
-
+  jwtInterceptor();
   // 🐨 Todo: Exercise #2
   //  ให้เขียน Logic ของ Function `register` ตรงนี้
   //  Function register ทำหน้าที่สร้าง Request ไปที่ API POST /register
@@ -40,6 +41,8 @@ function AuthProvider(props) {
     // 🐨 Todo: Exercise #7
     //  ให้เขียน Logic ของ Function `logout` ตรงนี้
     //  Function logout ทำหน้าที่ในการลบ JWT Token ออกจาก Local Storage
+    localStorage.removeItem("token");
+    setState({ ...state, user: null });
   };
 
   const isAuthenticated = Boolean(localStorage.getItem("token"));
